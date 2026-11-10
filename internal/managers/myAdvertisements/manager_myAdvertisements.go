@@ -22,3 +22,17 @@ func GetMyAdvertisements(t *testing.T, token string, expectedStatusCode int, lim
 
 	return string(myAdvertisementsResponse)
 }
+func GetAdvertisementsList(t *testing.T, token string, text string) string {
+	t.Helper()
+
+	// 1. Добавили имя пакета myAdvertisements перед функцией клиента
+	raw := myAdvertisements.HttpGetAdvertisements(t, token, text)
+	defer raw.Body.Close()
+
+	// 2. Читаем сырые байты ответа сервера
+	body, err := io.ReadAll(raw.Body)
+	require.NoError(t, err, "Не удалось прочитать тело ответа")
+
+	// 3. Просто возвращаем весь JSON-ответ как строку string (как на строке 25)
+	return string(body)
+}

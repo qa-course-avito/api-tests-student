@@ -16,3 +16,14 @@ func HttpGetMyAdvertisements(t *testing.T, token string, limit int) *http.Respon
 		Expect(t).
 		End().Response
 }
+
+// HttpGetAdvertisements выполняет GET-запрос для поиска объявлений по названию
+func HttpGetAdvertisements(t *testing.T, token string, textForSearch string) *http.Response {
+	return apiRunner.GetRunner().Auth(token).Create().
+		Get(path.AdvertisementsPath).
+		Query("text", textForSearch).
+		Expect(t).
+		Status(http.StatusOK).
+		End().Response
+}
+
